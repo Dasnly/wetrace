@@ -8,6 +8,7 @@ package view;
 import entity.Roteiro;
 import factory.ConnectionFactory;
 import javax.swing.JOptionPane;
+import persist.RequisicaoDAO;
 import persist.RoteiroDAO;
 
 /**
@@ -15,27 +16,35 @@ import persist.RoteiroDAO;
  * @author Victor
  */
 public class TelaCadastroRoteiro extends javax.swing.JFrame {
-        
-        private static String idviajante;
-        private String nomeRoteiro;
-        
-        
-        
-        
-        
-        
-        public void setId(String string){
-           
-            this.idviajante = string;
 
+    private static String idviajante;
+    private String nomeRoteiro;
+    private String idRequisicao;
 
-        }
-        
+    public String getIdRequisicao() {
+        return idRequisicao;
+    }
 
-        
-        public String getId(){
-            return idviajante;
-        }
+    public void setIdRequisicao(String id) {
+        this.idRequisicao = id;
+    }
+
+    //fon
+    public void setValues(String regiao, String inicio, String descricao) {
+        jTextFieldRegiao.setText(regiao);
+        jTextFieldInicio.setText(inicio);
+        jTextFieldDescricao.setText(descricao);
+    }
+
+    public void setId(String string) {
+
+        this.idviajante = string;
+
+    }
+
+    public String getId() {
+        return idviajante;
+    }
 
     /**
      * Creates new form TelaCadastroRoteiro
@@ -43,8 +52,7 @@ public class TelaCadastroRoteiro extends javax.swing.JFrame {
     public TelaCadastroRoteiro() {
         initComponents();
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -177,46 +185,41 @@ public class TelaCadastroRoteiro extends javax.swing.JFrame {
         roteiro.setDataInicio(jTextFieldInicio.getText());
         roteiro.setDescricao(jTextFieldDescricao.getText());
 
-
-
-
 // fazendo a validação dos dados
-if ((jTextFieldNome.getText().isEmpty()) || (jTextFieldRegiao.getText().isEmpty()) || (jTextFieldInicio.getText().isEmpty()) || (jTextFieldDescricao.getText().isEmpty())) {
-   JOptionPane.showMessageDialog(null, "Os campos não podem retornar vazios");
-   }       
-else {
-         
-         nomeRoteiro = (jTextFieldNome.getText());
-         System.err.println(nomeRoteiro);
-         RoteiroDAO rd = new RoteiroDAO();
-         rd.setNomeRoteiro(nomeRoteiro);
+        if ((jTextFieldNome.getText().isEmpty()) || (jTextFieldRegiao.getText().isEmpty()) || (jTextFieldInicio.getText().isEmpty()) || (jTextFieldDescricao.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Os campos não podem retornar vazios");
+        } else {
 
-    // instanciando a classe UsuarioDAO do pacote dao e criando seu objeto dao
-    RoteiroDAO dao = new RoteiroDAO();
-    dao.addRoteiro(roteiro, getId());
+            nomeRoteiro = (jTextFieldNome.getText());
+            System.err.println(nomeRoteiro);
+            RoteiroDAO rd = new RoteiroDAO();
+            rd.setNomeRoteiro(nomeRoteiro);
 
+            // instanciando a classe UsuarioDAO do pacote dao e criando seu objeto dao
+            RoteiroDAO dao = new RoteiroDAO();
+            dao.addRoteiro(roteiro, getId());
 
+            RequisicaoDAO reqDao = new RequisicaoDAO();
+            reqDao.deleteRequisicao(idRequisicao);
 
 // apaga os dados preenchidos nos campos de texto
-jTextFieldNome.setText("");
-jTextFieldRegiao.setText("");
-jTextFieldInicio.setText("");
-jTextFieldDescricao.setText("");
+            jTextFieldNome.setText("");
+            jTextFieldRegiao.setText("");
+            jTextFieldInicio.setText("");
+            jTextFieldDescricao.setText("");
 
-         TelaRoteiroConstrucao telaRoteiroConstrucao = new TelaRoteiroConstrucao();
-         telaRoteiroConstrucao.setVisible(true);
-         setVisible(false);
-}
+            TelaRoteiroConstrucao telaRoteiroConstrucao = new TelaRoteiroConstrucao();
+            telaRoteiroConstrucao.setVisible(true);
+            setVisible(false);
+        }
 
-
-    
 
     }//GEN-LAST:event_ProsseguirActionPerformed
 
     private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
-         TelaGuiaDeViagem telaGuiaDeViagem = new TelaGuiaDeViagem();
-         telaGuiaDeViagem.setVisible(true);
-         setVisible(false);    
+        TelaGuiaDeViagem telaGuiaDeViagem = new TelaGuiaDeViagem();
+        telaGuiaDeViagem.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_CancelarActionPerformed
 
     /**

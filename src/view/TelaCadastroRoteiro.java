@@ -199,8 +199,10 @@ public class TelaCadastroRoteiro extends javax.swing.JFrame {
             RoteiroDAO dao = new RoteiroDAO();
             dao.addRoteiro(roteiro, getId());
 
-            RequisicaoDAO reqDao = new RequisicaoDAO();
-            reqDao.deleteRequisicao(idRequisicao);
+            if (idRequisicao != null) {
+                RequisicaoDAO reqDao = new RequisicaoDAO();
+                reqDao.deleteRequisicao(idRequisicao);
+            }
 
 // apaga os dados preenchidos nos campos de texto
             jTextFieldNome.setText("");

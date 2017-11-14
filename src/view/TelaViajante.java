@@ -44,6 +44,11 @@ public class TelaViajante extends javax.swing.JFrame {
         });
 
         AtualizarRoteiro.setText("Atualizar Roteiro");
+        AtualizarRoteiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AtualizarRoteiroActionPerformed(evt);
+            }
+        });
 
         RequisitarRoteiro.setText("Requisitar Roteiro");
         RequisitarRoteiro.addActionListener(new java.awt.event.ActionListener() {
@@ -101,15 +106,15 @@ public class TelaViajante extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutActionPerformed
-         TelaLogoutViajante telaViaja = new TelaLogoutViajante();
-         telaViaja.setVisible(true);
-         setVisible(false);
+        TelaLogoutViajante telaViaja = new TelaLogoutViajante();
+        telaViaja.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_LogoutActionPerformed
 
     private void RequisitarRoteiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RequisitarRoteiroActionPerformed
-         TelaCadastroRequisicao telaCadastroRequisicao = new TelaCadastroRequisicao();
-         telaCadastroRequisicao.setVisible(true);
-         setVisible(false);
+        TelaCadastroRequisicao telaCadastroRequisicao = new TelaCadastroRequisicao();
+        telaCadastroRequisicao.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_RequisitarRoteiroActionPerformed
 
     private void RoteirosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoteirosActionPerformed
@@ -117,6 +122,11 @@ public class TelaViajante extends javax.swing.JFrame {
         frame.pack();
         frame.setVisible(true);
     }//GEN-LAST:event_RoteirosActionPerformed
+
+    private void AtualizarRoteiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtualizarRoteiroActionPerformed
+        TelaCumprirRoteiro telaCumprirRoteiro = new TelaCumprirRoteiro();
+        telaCumprirRoteiro.setVisible(true);
+    }//GEN-LAST:event_AtualizarRoteiroActionPerformed
 
     /**
      * @param args the command line arguments

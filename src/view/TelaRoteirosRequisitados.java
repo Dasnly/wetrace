@@ -23,7 +23,7 @@ public class TelaRoteirosRequisitados extends javax.swing.JFrame {
      * Creates new form TelaRoteirosRequisitados
      */
     public TelaRoteirosRequisitados() {
-        
+
         ArrayList columnNames = new ArrayList();
         ArrayList data = new ArrayList();
 
@@ -50,11 +50,11 @@ public class TelaRoteirosRequisitados extends javax.swing.JFrame {
             //  Get row data
             while (rs.next()) {
                 ArrayList row = new ArrayList(columns);
-                
+
                 for (int i = 1; i <= columns; i++) {
                     row.add(rs.getObject(i));
                 }
-                
+
                 data.add(row);
             }
         } catch (SQLException e) {
@@ -67,7 +67,7 @@ public class TelaRoteirosRequisitados extends javax.swing.JFrame {
         // class which inherits from the AbstractTableModel class
         Vector columnNamesVector = new Vector();
         Vector dataVector = new Vector();
-        
+
         for (int i = 0; i < data.size(); i++) {
             ArrayList subArray = (ArrayList) data.get(i);
             Vector subVector = new Vector();
@@ -76,7 +76,7 @@ public class TelaRoteirosRequisitados extends javax.swing.JFrame {
             }
             dataVector.add(subVector);
         }
-        
+
         for (int i = 0; i < columnNames.size(); i++) {
             columnNamesVector.add(columnNames.get(i));
         }
@@ -86,25 +86,25 @@ public class TelaRoteirosRequisitados extends javax.swing.JFrame {
             public Class getColumnClass(int column) {
                 for (int row = 0; row < getRowCount(); row++) {
                     Object o = getValueAt(row, column);
-                    
+
                     if (o != null) {
                         return o.getClass();
                     }
                 }
-                
+
                 return Object.class;
             }
         };
-        
+
         JScrollPane scrollPane = new JScrollPane(table);
         getContentPane().add(scrollPane);
-        
+
         JPanel buttonPanel = new JPanel();
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-        
-        final JTextField field = new JTextField();
+
+        JTextField field = new JTextField();
         getContentPane().add(field, BorderLayout.NORTH);
-        
+
         JButton bt = new JButton();
         bt.setText("ACEITAR REQUISICAO");
         bt.addActionListener(new ActionListener() {
@@ -122,11 +122,11 @@ public class TelaRoteirosRequisitados extends javax.swing.JFrame {
         if (text != null) {
             try {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost/wetrace", "victor", "1234");
-                
+
                 Statement stmt = con.createStatement();
                 String SQL = "SELECT regiao, dataInicio, oqueEspero FROM requisicao WHERE idrequisicao ='" + text + "'";
                 ResultSet rs = stmt.executeQuery(SQL);
-                
+
                 if (rs.next()) {
                     TelaCadastroRoteiro telaCadastroRoteiro = new TelaCadastroRoteiro();
                     telaCadastroRoteiro.setIdRequisicao(text);
@@ -189,7 +189,7 @@ public class TelaRoteirosRequisitados extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TelaRoteirosRequisitados().setVisible(true);
-                
+
             }
         });
     }

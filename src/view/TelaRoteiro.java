@@ -6,10 +6,13 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import persist.ViajanteDAO;
 
 /**
  *
@@ -21,7 +24,7 @@ public class TelaRoteiro extends javax.swing.JFrame {
      * Creates new form TelaRoteiro
      */
     public TelaRoteiro() {
-        
+
         ArrayList columnNames = new ArrayList();
         ArrayList data = new ArrayList();
 
@@ -29,40 +32,34 @@ public class TelaRoteiro extends javax.swing.JFrame {
         String url = "jdbc:mysql://localhost:3306/wetrace";
         String userid = "victor";
         String password = "1234";
-        String sql = "SELECT nome,regiao,dataInicio,descricao FROM roteiro";
+        String sql = "SELECT idroteiro,nome,regiao,dataInicio,descricao FROM roteiro";
 
         // Java SE 7 has try-with-resources
         // This will ensure that the sql objects are closed when the program 
         // is finished with them
-        try (Connection connection = DriverManager.getConnection( url, userid, password );
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery( sql ))
-        {
+        try (Connection connection = DriverManager.getConnection(url, userid, password);
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
 
             //  Get column names
-            for (int i = 1; i <= columns; i++)
-            {
-                columnNames.add( md.getColumnName(i) );
+            for (int i = 1; i <= columns; i++) {
+                columnNames.add(md.getColumnName(i));
             }
 
             //  Get row data
-            while (rs.next())
-            {
+            while (rs.next()) {
                 ArrayList row = new ArrayList(columns);
 
-                for (int i = 1; i <= columns; i++)
-                {
-                    row.add( rs.getObject(i) );
+                for (int i = 1; i <= columns; i++) {
+                    row.add(rs.getObject(i));
                 }
 
-                data.add( row );
+                data.add(row);
             }
-        }
-        catch (SQLException e)
-        {
-            System.out.println( e.getMessage() );
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
 
         // Create Vectors and copy over elements from ArrayLists to them
@@ -72,31 +69,26 @@ public class TelaRoteiro extends javax.swing.JFrame {
         Vector columnNamesVector = new Vector();
         Vector dataVector = new Vector();
 
-        for (int i = 0; i < data.size(); i++)
-        {
-            ArrayList subArray = (ArrayList)data.get(i);
+        for (int i = 0; i < data.size(); i++) {
+            ArrayList subArray = (ArrayList) data.get(i);
             Vector subVector = new Vector();
-            for (int j = 0; j < subArray.size(); j++)
-            {
+            for (int j = 0; j < subArray.size(); j++) {
                 subVector.add(subArray.get(j));
             }
             dataVector.add(subVector);
         }
 
-        for (int i = 0; i < columnNames.size(); i++ )
+        for (int i = 0; i < columnNames.size(); i++) {
             columnNamesVector.add(columnNames.get(i));
+        }
 
         //  Create table with database data    
-        JTable table = new JTable(dataVector, columnNamesVector)
-        {
-            public Class getColumnClass(int column)
-            {
-                for (int row = 0; row < getRowCount(); row++)
-                {
+        JTable table = new JTable(dataVector, columnNamesVector) {
+            public Class getColumnClass(int column) {
+                for (int row = 0; row < getRowCount(); row++) {
                     Object o = getValueAt(row, column);
 
-                    if (o != null)
-                    {
+                    if (o != null) {
                         return o.getClass();
                     }
                 }
@@ -105,15 +97,33 @@ public class TelaRoteiro extends javax.swing.JFrame {
             }
         };
 
-        JScrollPane scrollPane = new JScrollPane( table );
-        getContentPane().add( scrollPane );
+        JScrollPane scrollPane = new JScrollPane(table);
+        getContentPane().add(scrollPane);
 
         JPanel buttonPanel = new JPanel();
-        getContentPane().add( buttonPanel, BorderLayout.SOUTH );
-        
-    }
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-    
+        final JTextField field = new JTextField();
+        getContentPane().add(field, BorderLayout.NORTH);
+
+        JButton bt = new JButton();
+        bt.setText("SELECIONAR ROTEIRO");
+        bt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String idviajante = TelaLogin.getIdviajante();
+                String idRoteiro = field.getText();
+                if (idviajante != null) {
+                    ViajanteDAO viajDao = new ViajanteDAO();
+                    viajDao.setRoteiroAtual(idRoteiro, idviajante);
+                    JOptionPane.showMessageDialog(null, "Roteiro " + idRoteiro + " selecionado");
+                    setVisible(false);
+                }
+            }
+        });
+        getContentPane().add(bt, BorderLayout.SOUTH);
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

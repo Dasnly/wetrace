@@ -9,18 +9,16 @@ import factory.ConnectionFactory;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-
-
-
 /**
  *
  * @author Victor
  */
 public class TelaLogin extends javax.swing.JFrame {
-            private String a = "1";
-            private String b = "2";
-            private String c = "3";
-            private String idviajante;
+
+    private String a = "1";
+    private String b = "2";
+    private String c = "3";
+    private static String idviajante;
 
     /**
      * Creates new form TelaLogin
@@ -28,74 +26,64 @@ public class TelaLogin extends javax.swing.JFrame {
     public TelaLogin() {
         initComponents();
     }
-    
-    public void getId(){
-        
 
-        
+    public void getId() {
     }
-    
-    public int acessarSistema(){
-        
+
+    public static String getIdviajante() {
+        return idviajante;
+    }
+
+    public int acessarSistema() {
 
         try {
-    
-    
 
-        ConnectionFactory fab = new ConnectionFactory();
-        fab.abrirConexao();
-        fab.stmt = fab.con.createStatement();
-        
-        String sql = "SELECT * FROM viajante";
+            ConnectionFactory fab = new ConnectionFactory();
+            fab.abrirConexao();
+            fab.stmt = fab.con.createStatement();
+
+            String sql = "SELECT * FROM viajante";
             fab.rs = fab.stmt.executeQuery(sql);
             fab.rs.first();
 
             while (fab.rs.next()) {
-                
-                
-                 while(txtEmail.getText().equals(fab.rs.getString("email")) && ptxtSenha.getText().equals(fab.rs.getString("senha")) && a.equals(fab.rs.getString("level"))){
-                     TelaViajante tela = new TelaViajante();
-                     tela.setVisible(true);
-                     setVisible(false);
+
+                while (txtEmail.getText().equals(fab.rs.getString("email")) && ptxtSenha.getText().equals(fab.rs.getString("senha")) && a.equals(fab.rs.getString("level"))) {
+                    idviajante = fab.rs.getString("idviajante");
+                    TelaViajante tela = new TelaViajante();
+                    tela.setVisible(true);
+                    setVisible(false);
                     return 1;
-        }
-                
-                
-                 while(txtEmail.getText().equals(fab.rs.getString("email")) && ptxtSenha.getText().equals(fab.rs.getString("senha")) && b.equals(fab.rs.getString("level"))){
-                     idviajante = fab.rs.getString("idviajante");                     
-                     TelaCadastroRoteiro tcr = new TelaCadastroRoteiro();
-                     tcr.setId(idviajante);
-                     TelaGuiaDeViagem tela = new TelaGuiaDeViagem();
-                     tela.setVisible(true);
-                     setVisible(false);
+                }
+
+                while (txtEmail.getText().equals(fab.rs.getString("email")) && ptxtSenha.getText().equals(fab.rs.getString("senha")) && b.equals(fab.rs.getString("level"))) {
+                    idviajante = fab.rs.getString("idviajante");
+                    TelaCadastroRoteiro tcr = new TelaCadastroRoteiro();
+                    tcr.setId(idviajante);
+                    TelaGuiaDeViagem tela = new TelaGuiaDeViagem();
+                    tela.setVisible(true);
+                    setVisible(false);
                     return 1;
-                 
-        }
-                
-                
-                 while(txtEmail.getText().equals(fab.rs.getString("email")) && ptxtSenha.getText().equals(fab.rs.getString("senha")) && c.equals(fab.rs.getString("level"))){
-                     TelaAdministrador tela = new TelaAdministrador();
-                     tela.setVisible(true);
-                     setVisible(false);
+
+                }
+
+                while (txtEmail.getText().equals(fab.rs.getString("email")) && ptxtSenha.getText().equals(fab.rs.getString("senha")) && c.equals(fab.rs.getString("level"))) {
+                    TelaAdministrador tela = new TelaAdministrador();
+                    tela.setVisible(true);
+                    setVisible(false);
                     return 1;
-                 
-                
-        } 
-        }
-            
+
+                }
+            }
+
             JOptionPane.showMessageDialog(null, "E-mail ou Senha Inválidos");
 
-
-       
-        
-        
         } catch (SQLException e) {
-            
-        }  
-        
-        return 1;
-}
 
+        }
+
+        return 1;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -210,13 +198,13 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSairActionPerformed
 
     private void jButtonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarActionPerformed
-         TelaCadastro tela = new TelaCadastro();
-         tela.setVisible(true);
-         setVisible(false);
+        TelaCadastro tela = new TelaCadastro();
+        tela.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_jButtonCadastrarActionPerformed
 
     private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntrarActionPerformed
-       acessarSistema();
+        acessarSistema();
     }//GEN-LAST:event_jButtonEntrarActionPerformed
 
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
